@@ -55,4 +55,11 @@ else
 fi
 }
 
+install_vundle () {
+    if [ ! -d $dir/vim/bundle ]; then
+        git clone https://github.com/gmarik/Vundle.vim.git $dir/vim/bundle/Vundle.vim
+    fi
+}
+
 install_zsh
+install_vundle
