@@ -50,7 +50,8 @@ else
         install_zsh
     # If the platform is OS X, tell the user to install zsh :)
     elif [[ $platform == 'Darwin' ]]; then
-        brew install zsh
+        brew install zsh && sudo echo "$(which zsh)" | sudo tee -a /etc/shells
+        install_zsh
     fi
 fi
 }
