@@ -6,11 +6,13 @@
 "   04. Vim UI .................. User interface behavior                    "
 "   05. Text Formatting/Layout .. Text, tab, indentation related             "
 "   06. Custom Commands ......... Any custom command aliases                 "
+"   07. Plugin Settings ......... Any custom command aliases                 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 01. General                                                                "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+set encoding=utf-8
 set nocompatible         " get rid of Vi compatibility mode. SET FIRST!
 filetype off             " required
 
@@ -22,6 +24,33 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
+" git
+Plugin 'tpope/vim-fugitive'
+" syntactic checker, might require other plugins
+Plugin 'scrooloose/syntastic'
+" tagbar is the new taglist
+Plugin 'majutsushi/tagbar'
+" silver search
+Plugin 'rking/ag.vim'
+" parantheses coloring
+Plugin 'luochen1990/rainbow'
+" automatic closing parens
+Plugin 'Raimondi/delimitMate'
+" automatic comments
+Plugin 'tomtom/tcomment_vim'
+
+" linux kernel
+Plugin 'linuxsty.vim'
+
+" syntax files
+Plugin 'leshill/vim-json'
+Plugin 'jtratner/vim-flavored-markdown'
+" trailing white-spaces
+Plugin 'ntpeters/vim-better-whitespace'
+
+" Python
+Plugin 'nvie/vim-flake8'
+Plugin 'fs111/pydoc.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -38,6 +67,19 @@ call vundle#end()            " required
 "
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
+
+" Wildmenu
+set wildmenu
+set wildmode=list:longest
+set wildignore+=.hg,.git,.svn                    " Version control
+set wildignore+=*.aux,*.out,*.toc                " LaTeX intermediate files
+set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest " compiled object files
+set wildignore+=*.spl                            " compiled spelling word lists 
+set wildignore+=*.sw?                            " Vim swap files
+set wildignore+=*.DS_Store                       " OSX bullshit
+set wildignore+=*.luac                           " Lua byte code
+set wildignore+=*.pyc                            " Python byte code
+set wildignore+=**.class                         " Cursed Java class files
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 02. Events                                                                 "
@@ -88,13 +130,15 @@ set number                " show line numbers
 set numberwidth=6         " make the number gutter 6 characters wide
 set cul                   " highlight current line
 set laststatus=2          " last window always has a statusline
-set nohlsearch            " Don't continue to highlight searched phrases.
+set hlsearch            " Don't continue to highlight searched phrases.
 set incsearch             " But do highlight as you type your search.
 set ignorecase            " Make searches case-insensitive.
 set ruler                 " Always show info along bottom.
-set showmatch
+set showmatch             " set show matching paranthesis
 set statusline=%<%f\%h%m%r%=%-20.(line=%l\ \ col=%c%V\ \ totlin=%L%)\ \ \%h%m%r%=%-40(bytval=0x%B,%n%Y%)\%P
-set visualbell
+set title                " change the terminal's title
+set visualbell           " don't beep
+set noerrorbells         " don't beep
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 05. Text Formatting/Layout                                                 "
@@ -109,9 +153,30 @@ set smartindent           " automatically insert one extra level of indentation
 set smarttab              " use tabs at the start of a line, spaces elsewhere
 set nowrap                " don't wrap text
 
+" General Code Folding
+set foldmethod=indent
+set foldlevel=99
+
+" Highlight VCS conflict markers
+match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 06. Custom Commands                                                        "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Prettify JSON files making them easier to read
 command PrettyJSON %!python -m json.tool
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 07. Plugin Settings                                                        "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:rainbow_active = 1 " 0 if you want to enable it later via :RainbowToggle
+
+let g:syntastic_enable_signs = 1
+let g:syntastic_auto_jump = 0
+let g:tagbar_autoshowtag = 1
+let g:tagbar_autofocus = 1
+nnoremap <silent> <F8> :TagbarToggle<CR>
+let g:flake8_ignore="E128,E501"
+let g:syntastic_python_checker_args='--ignore=E501,E128'
+

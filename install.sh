@@ -30,6 +30,8 @@ for file in $files; do
     ln -s $dir/$file ~/.$file
 done
 
+platform=$(uname);
+
 install_zsh () {
 # Test to see if zshell is installed.  If it is:
 if [ -f /usr/local/bin/zsh -o -f /bin/zsh -o -f /usr/bin/zsh ]; then
@@ -43,7 +45,6 @@ if [ -f /usr/local/bin/zsh -o -f /bin/zsh -o -f /usr/bin/zsh ]; then
     fi
 else
     # If zsh isn't installed, get the platform of the current machine
-    platform=$(uname);
     # If the platform is Linux, try an apt-get to install zsh and then recurse
     if [[ $platform == 'Linux' ]]; then
         sudo apt-get install zsh
@@ -56,11 +57,35 @@ else
 fi
 }
 
+install_ctags () {
+    if [[ $platform == 'Linux' ]]; then
+        sudo apt-get install exuberant-ctags
+    elif [[ $platform == 'Darwin' ]]; then
+        brew install ctags
+    fi
+}
+
 install_vundle () {
     if [ ! -d $dir/vim/bundle ]; then
         git clone https://github.com/gmarik/Vundle.vim.git $dir/vim/bundle/Vundle.vim
     fi
 }
 
-install_zsh
-install_vundle
+read -p "Install zsh? " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    install_zsh
+fi
+
+read -p "Install vundle? " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    install_vundle
+fi
+
+read -p "Install ctags? " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    install_ctags
+fi
+
