@@ -65,6 +65,21 @@ elif [[ $platform == 'Darwin' ]]; then
 fi
 }
 
+install_cscope () {
+if [[ $platform == 'Linux' ]]; then
+    sudo apt-get install cscope
+elif [[ $platform == 'Darwin' ]]; then
+    brew install cscope
+fi
+}
+
+install_flake8 () {
+    if which pip | grep -s 'not found'; then
+        sudo easy_install pip
+    fi
+    pip install flake8
+}
+
 install_vundle () {
 if [ ! -d $dir/vim/bundle ]; then
     git clone https://github.com/gmarik/Vundle.vim.git $dir/vim/bundle/Vundle.vim
@@ -77,15 +92,31 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     install_zsh
 fi
 
-read -p "Install vundle? " -n 1 -r
+read -p "Install Vundle (VIM plugin manager)? " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     install_vundle
-fi
-
-read -p "Install ctags? " -n 1 -r
-echo
-if [[ $REPLY =~ ^[Yy]$ ]]; then
-    install_ctags
+    read -p "Install all Vundle plugins? " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        vim +PluginInstall +qall now
+    fi
+    echo "Some plugins have dependencies, see documentation!"
+    echo "Here are some of them:"
+    read -p "Install ctags? " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        install_ctags
+    fi
+    read -p "Install cscope? " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        install_cscope
+    fi
+    read -p "Install flake8? " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        install_flake8
+    fi
 fi
 
