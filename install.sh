@@ -58,17 +58,17 @@ fi
 }
 
 install_ctags () {
-    if [[ $platform == 'Linux' ]]; then
-        sudo apt-get install exuberant-ctags
-    elif [[ $platform == 'Darwin' ]]; then
-        brew install ctags
-    fi
+if [[ $platform == 'Linux' ]]; then
+    sudo apt-get install exuberant-ctags
+elif [[ $platform == 'Darwin' ]]; then
+    brew install ctags
+fi
 }
 
 install_vundle () {
-    if [ ! -d $dir/vim/bundle ]; then
-        git clone https://github.com/gmarik/Vundle.vim.git $dir/vim/bundle/Vundle.vim
-    fi
+if [ ! -d $dir/vim/bundle ]; then
+    git clone https://github.com/gmarik/Vundle.vim.git $dir/vim/bundle/Vundle.vim
+fi
 }
 
 read -p "Install zsh? " -n 1 -r

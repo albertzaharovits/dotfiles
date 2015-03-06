@@ -30,6 +30,8 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'scrooloose/syntastic'
 " tagbar is the new taglist
 Plugin 'majutsushi/tagbar'
+" cscope
+Plugin 'vim-scripts/cscope.vim'
 " silver search
 Plugin 'rking/ag.vim'
 " parantheses coloring
@@ -39,8 +41,15 @@ Plugin 'Raimondi/delimitMate'
 " automatic comments
 Plugin 'tomtom/tcomment_vim'
 
+" airline
+Plugin 'bling/vim-airline'
+
+" ctrl P fuzzy search
+Plugin 'kien/ctrlp.vim'
+Plugin 'scrooloose/nerdtree'
+
 " linux kernel
-Plugin 'linuxsty.vim'
+" Plugin 'linuxsty.vim'
 
 " syntax files
 Plugin 'leshill/vim-json'
@@ -81,6 +90,23 @@ set wildignore+=*.luac                           " Lua byte code
 set wildignore+=*.pyc                            " Python byte code
 set wildignore+=**.class                         " Cursed Java class files
 
+set backspace=indent,eol,start " Make backspace behave normally.
+set directory=/tmp// " swap files
+set backupskip=/tmp/*,/private/tmp/*
+
+set list listchars=tab:»\ ,trail:·
+
+" Save when losing focus
+set autowriteall " Auto-save files when switching buffers or leaving vim.
+au FocusLost * silent! :wa
+au TabLeave * silent! :wa
+
+" Resize splits when the window is resized
+au VimResized * exe "normal! \<c-w>=""
+
+" Toggle spellcheck in normal mode
+:map <F5> :setlocal spell! spelllang=en_us<CR>
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 02. Events                                                                 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -90,6 +116,10 @@ filetype plugin indent on " filetype detection[ON] plugin[ON] indent[ON]
 autocmd FileType make setlocal noexpandtab
 " In Ruby files, use 2 spaces instead of 4 for tabs
 autocmd FileType ruby setlocal sw=2 ts=2 sts=2
+
+" Get rid of trailing whitespace highlighting in mutt.
+autocmd FileType mail highlight clear ExtraWhitespace
+autocmd FileType mail setlocal listchars=
 
 " Enable omnicompletion (to use, hold Ctrl+X then Ctrl+O while in Insert mode.
 set ofu=syntaxcomplete#Complete
@@ -140,6 +170,11 @@ set title                " change the terminal's title
 set visualbell           " don't beep
 set noerrorbells         " don't beep
 
+" Remove the toolbar if we're running under a GUI (e.g. MacVIM).
+if has("gui_running")
+  set guioptions=-t
+endif
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 05. Text Formatting/Layout                                                 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -163,20 +198,90 @@ match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 06. Custom Commands                                                        "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let $VIMHOME = $HOME."/.vim"
 
 " Prettify JSON files making them easier to read
 command PrettyJSON %!python -m json.tool
+
+" Python configurations
+autocmd FileType python setlocal shiftwidth=4 expandtab tabstop=4 softtabstop=4
+autocmd FileType python map <buffer> <F4> :call Flake8()<CR>
+autocmd FileType python autocmd BufWritePre * :%s/\s\+$//e
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+
+"autocmd BufNewFile,BufRead *.h source $VIMHOME/bundle/linuxsty.vim/indent/linuxsty.vim
+"autocmd BufNewFile,BufRead *.c source $VIMHOME/bundle/linuxsty.vim/indent/linuxsty.vim
+
+" Fix those pesky situations where you edit & need sudo to save
+cmap w!! w !sudo tee % >/dev/null
+
+nmap <silent> ,/ :nohlsearch<CR>
+
+" in case your cscope execute is not in system path.
+" let g:cscope_cmd = 'D:/tools/vim/cscope.exe'
+" s: Find this C symbol
+map <leader>fs :call CscopeFind('s', expand('<cword>'))<CR>
+" g: Find this definition
+map <leader>fg :call CscopeFind('g', expand('<cword>'))<CR>
+" d: Find functions called by this function
+map <leader>fd :call CscopeFind('d', expand('<cword>'))<CR>
+" c: Find functions calling this function
+map <leader>fc :call CscopeFind('c', expand('<cword>'))<CR>
+" t: Find this text string
+map <leader>ft :call CscopeFind('t', expand('<cword>'))<CR>
+" e: Find this egrep pattern
+map <leader>fe :call CscopeFind('e', expand('<cword>'))<CR>
+" f: Find this file
+map <leader>ff :call CscopeFind('f', expand('<cword>'))<CR>
+" i: Find files #including this file
+map <leader>fi :call CscopeFind('i', expand('<cword>'))<CR>
+map <leader>l :call ToggleLocationList()<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 07. Plugin Settings                                                        "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:rainbow_active = 1 " 0 if you want to enable it later via :RainbowToggle
 
+let g:syntastic_cpp_check_header = 1
+let g:syntastic_cpp_no_include_search = 1
+let g:syntastic_cpp_no_default_include_dirs = 1
+let g:syntastic_cpp_auto_refresh_includes = 1
+let g:syntastic_enable_perl_checker = 1
 let g:syntastic_enable_signs = 1
 let g:syntastic_auto_jump = 0
+
 let g:tagbar_autoshowtag = 1
 let g:tagbar_autofocus = 1
 nnoremap <silent> <F8> :TagbarToggle<CR>
-let g:flake8_ignore="E128,E501"
 let g:syntastic_python_checker_args='--ignore=E501,E128'
 
+let g:ctrlp_map = '<c-p>'
+let g:ctrlp_cmd = 'CtrlP'  " search anything (in files, buffers and MRU files at the same time.)
+let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard']
+let g:ctrlp_custom_ignore = '\v\~$|\.(o|swp|pyc|wav|mp3|ogg|blend)$|(^|[/\\])\.(hg|git|bzr)($|[/\\])|__init__\.py'
+let g:ctrlp_root_markers = ['.git']
+let g:ctrlp_working_path_mode = 'ra' " search for nearest ancestor like .git,.hg, and the directory of the current file
+let g:ctrlp_match_window_bottom = 0 " show the match window at the top of the screen
+let g:ctrlp_max_height = 10 " maxiumum height of match window
+let g:ctrlp_switch_buffer = 'et' " jump to a file if it's open already
+let g:ctrlp_use_caching = 1 " enable caching
+let g:ctrlp_clear_cache_on_exit=0 " speed up by not removing clearing cache everytime
+let g:ctrlp_show_hidden = 0 " don't show me dotfiles
+let g:ctrlp_mruf_max = 250 " number of recently opened files
+nmap ; :CtrlPBuffer<CR>
+
+" Airline configs
+let g:airline#extensions#tabline#enabled = 0
+" Show just the filename
+let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline_powerline_fonts = 1
+
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+
+" NerdTree
+map <leader>t :NERDTreeToggle<CR>
+let NERDTreeIgnore=['\.pyc$', '\~$']
+let g:nerdtree_tabs_open_on_gui_startup = 0
+let g:nerdtree_tabs_open_on_console_startup = 0
