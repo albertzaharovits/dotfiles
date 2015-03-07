@@ -40,6 +40,8 @@ Plugin 'luochen1990/rainbow'
 Plugin 'Raimondi/delimitMate'
 " automatic comments
 Plugin 'tomtom/tcomment_vim'
+" save folding & cursor position ! KINDA laggy
+Plugin 'vim-scripts/restore_view.vim'
 
 " airline
 Plugin 'bling/vim-airline'
@@ -122,7 +124,7 @@ autocmd FileType mail highlight clear ExtraWhitespace
 autocmd FileType mail setlocal listchars=
 
 " Enable omnicompletion (to use, hold Ctrl+X then Ctrl+O while in Insert mode.
-set ofu=syntaxcomplete#Complete
+set omnifunc=syntaxcomplete#Complete
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 03. Theme/Colors                                                           "
@@ -191,6 +193,8 @@ set nowrap                " don't wrap text
 " General Code Folding
 set foldmethod=indent
 set foldlevel=99
+nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
+vnoremap <Space> zf
 
 " Highlight VCS conflict markers
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
@@ -242,18 +246,23 @@ map <leader>l :call ToggleLocationList()<CR>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:rainbow_active = 1 " 0 if you want to enable it later via :RainbowToggle
 
+let g:syntastic_check_on_open = 1
+let g:syntastic_enable_signs = 1
+let g:syntastic_error_symbol = "✗"
+let g:syntastic_warning_symbol = "⚠"
+let g:syntastic_auto_jump = 2
 let g:syntastic_cpp_check_header = 1
 let g:syntastic_cpp_no_include_search = 1
 let g:syntastic_cpp_no_default_include_dirs = 1
 let g:syntastic_cpp_auto_refresh_includes = 1
 let g:syntastic_enable_perl_checker = 1
-let g:syntastic_enable_signs = 1
-let g:syntastic_auto_jump = 0
+let g:syntastic_python_checker_args='--ignore=E501,E128'
 
 let g:tagbar_autoshowtag = 1
 let g:tagbar_autofocus = 1
+let g:tagbar_compact = 1
+let g:tagbar_autoshowtag = 1
 nnoremap <silent> <F8> :TagbarToggle<CR>
-let g:syntastic_python_checker_args='--ignore=E501,E128'
 
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'  " search anything (in files, buffers and MRU files at the same time.)
