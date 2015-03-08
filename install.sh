@@ -74,8 +74,12 @@ fi
 }
 
 install_flake8 () {
-    if which pip | grep -s 'not found'; then
-        sudo easy_install pip
+    if [ ! $(hash pip) ]; then
+        if [[ $platform == 'Linux' ]]; then
+            sudo apt-get install python-pip
+        elif [[ $platform == 'Darwin' ]]; then
+            sudo easy_install pip
+        fi
     fi
     pip install flake8
 }
