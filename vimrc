@@ -188,7 +188,12 @@ set shiftround            " always indent/outdent to the nearest tabstop
 set expandtab             " use spaces instead of tabs
 set smartindent           " automatically insert one extra level of indentation
 set smarttab              " use tabs at the start of a line, spaces elsewhere
-set nowrap                " don't wrap text
+
+set wrap                  " wrap text
+set linebreak
+set nolist
+set textwidth=0
+set wrapmargin=0
 
 " General Code Folding
 set foldmethod=indent
@@ -278,6 +283,7 @@ let g:ctrlp_clear_cache_on_exit=0 " speed up by not removing clearing cache ever
 let g:ctrlp_show_hidden = 0 " don't show me dotfiles
 let g:ctrlp_mruf_max = 250 " number of recently opened files
 nmap ; :CtrlPBuffer<CR>
+nmap . :CtrlPTag<CR>
 
 " Airline configs
 let g:airline#extensions#tabline#enabled = 0
