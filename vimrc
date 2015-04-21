@@ -51,7 +51,7 @@ Plugin 'kien/ctrlp.vim'
 Plugin 'scrooloose/nerdtree'
 
 " linux kernel
-" Plugin 'linuxsty.vim'
+Plugin 'linuxsty.vim'
 
 " syntax files
 Plugin 'leshill/vim-json'
@@ -62,6 +62,10 @@ Plugin 'ntpeters/vim-better-whitespace'
 " Python
 Plugin 'nvie/vim-flake8'
 Plugin 'fs111/pydoc.vim'
+
+" more than omni completion, jedi completion (in python)
+Plugin 'davidhalter/jedi-vim'
+Plugin 'ervandew/supertab'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -108,6 +112,9 @@ au VimResized * exe "normal! \<c-w>=""
 
 " Toggle spellcheck in normal mode
 :map <F5> :setlocal spell! spelllang=en_us<CR>
+
+" default yank/paste in unnamed register(clipboard)
+set clipboard=unnamed
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 02. Events                                                                 "
@@ -216,7 +223,8 @@ command PrettyJSON %!python -m json.tool
 autocmd FileType python setlocal shiftwidth=4 expandtab tabstop=4 softtabstop=4
 autocmd FileType python map <buffer> <F4> :call Flake8()<CR>
 autocmd FileType python autocmd BufWritePre * :%s/\s\+$//e
-autocmd FileType python set omnifunc=pythoncomplete#Complete
+" let jedi-vim set its omnifunc
+" autocmd FileType python set omnifunc=pythoncomplete#Complete
 
 "autocmd BufNewFile,BufRead *.h source $VIMHOME/bundle/linuxsty.vim/indent/linuxsty.vim
 "autocmd BufNewFile,BufRead *.c source $VIMHOME/bundle/linuxsty.vim/indent/linuxsty.vim

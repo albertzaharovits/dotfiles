@@ -57,6 +57,15 @@ else
 fi
 }
 
+# The Silver searcher (like ack or grep, but faster)
+install_ag () {
+if [[ $platform == 'Linux' ]]; then
+    sudo apt-get install
+elif [[ $platform == 'Darwin' ]]; then
+    brew install ag
+fi
+}
+
 install_ctags () {
 if [[ $platform == 'Linux' ]]; then
     sudo apt-get install exuberant-ctags
