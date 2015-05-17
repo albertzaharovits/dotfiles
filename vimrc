@@ -64,8 +64,12 @@ Plugin 'nvie/vim-flake8'
 Plugin 'fs111/pydoc.vim'
 
 " more than omni completion, jedi completion (in python)
-Plugin 'davidhalter/jedi-vim'
-Plugin 'ervandew/supertab'
+Plugin 'Valloric/YouCompleteMe'
+" YCM superseds this
+" Plugin 'davidhalter/jedi-vim'
+" Plugin 'ervandew/supertab'
+
+Plugin 'mephux/bro.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -291,7 +295,7 @@ let g:ctrlp_clear_cache_on_exit=0 " speed up by not removing clearing cache ever
 let g:ctrlp_show_hidden = 0 " don't show me dotfiles
 let g:ctrlp_mruf_max = 250 " number of recently opened files
 nmap ; :CtrlPBuffer<CR>
-nmap . :CtrlPTag<CR>
+nmap , :CtrlPTag<CR>
 
 " Airline configs
 let g:airline#extensions#tabline#enabled = 0

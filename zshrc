@@ -76,3 +76,9 @@ qfind () {
 if [ -f /usr/bin/vim ]; then
   export EDITOR=/usr/bin/vim
 fi
+
+if [ -e /usr/local/bin/fortune ]; then
+    fortune -so
+    echo " "
+fi
+
