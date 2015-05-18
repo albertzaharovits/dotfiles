@@ -12,6 +12,25 @@ files="bashrc vimrc vim zshrc oh-my-zsh"    # list of files/folders to symlink i
 
 ##########
 
+platform=$(uname);
+
+if [[ $platform == 'Linux' ]]; then
+    if `type -p apt-get > /dev/null`; then
+        inst_cmd="sudo apt-get install"
+    elif `type -p yum > /dev/null`; then
+        inst_cmd="sudo yum install"
+    fi
+elif [[ $platform == 'Darwin' ]]; then
+    if `type -p brew > /dev/null`; then
+        inst_cmd="brew install"
+    fi
+fi
+
+if [ -z "$inst_cmd" ]; then
+    echo "UNSET install command"
+    exit 13
+fi
+
 # create dotfiles_old in homedir
 echo -n "Creating $olddir for backup of any existing dotfiles in ~ ..."
 mkdir -p $olddir
@@ -30,7 +49,6 @@ for file in $files; do
     ln -s $dir/$file ~/.$file
 done
 
-platform=$(uname);
 
 install_zsh () {
 # Test to see if zshell is installed.  If it is:
@@ -41,45 +59,34 @@ if [ -f /usr/local/bin/zsh -o -f /bin/zsh -o -f /usr/bin/zsh ]; then
     fi
     # Set the default shell to zsh if it isn't currently set to zsh
     if [[ ! $(echo $SHELL) == $(which zsh) ]]; then
-        chsh -s $(which zsh)
+        chsh -s $(which zsh) $USER
     fi
 else
     # If zsh isn't installed, get the platform of the current machine
     # If the platform is Linux, try an apt-get to install zsh and then recurse
-    if [[ $platform == 'Linux' ]]; then
-        sudo apt-get install zsh
-        install_zsh
-    # If the platform is OS X, tell the user to install zsh :)
-    elif [[ $platform == 'Darwin' ]]; then
-        brew install zsh && sudo echo "$(which zsh)" | sudo tee -a /etc/shells
-        install_zsh
+    "$inst_cmd zsh"
+    if [[ $platform == 'Darwin' ]]; then
+        sudo echo "`which zsh`" | sudo tee -a /etc/shells
     fi
+    install_zsh
 fi
 }
 
 # The Silver searcher (like ack or grep, but faster)
 install_ag () {
-if [[ $platform == 'Linux' ]]; then
-    sudo apt-get install
-elif [[ $platform == 'Darwin' ]]; then
-    brew install ag
-fi
+    "$inst_cmd ag"
 }
 
 install_ctags () {
 if [[ $platform == 'Linux' ]]; then
-    sudo apt-get install exuberant-ctags
+    "$inst_cmd exuberant-ctags"
 elif [[ $platform == 'Darwin' ]]; then
-    brew install ctags
+    "$inst_cmd ctags"
 fi
 }
 
 install_cscope () {
-if [[ $platform == 'Linux' ]]; then
-    sudo apt-get install cscope
-elif [[ $platform == 'Darwin' ]]; then
-    brew install cscope
-fi
+    "$inst_cmd cscope"
 }
 
 install_flake8 () {
