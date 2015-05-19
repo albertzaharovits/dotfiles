@@ -108,9 +108,13 @@ fi
 
 install_flake8 () {
 if ! type -P pip &> /dev/null; then
-    sudo easy_install pip
+    if [[ $platform == 'Linux' ]]; then
+        eval "$inst_cmd python-pip"
+    elif [[ $platform == 'Darwin' ]]; then
+        eval "$inst_cmd python"
+    fi
 fi
-pip install flake8
+sudo pip install flake8
 }
 
 install_vundle () {
