@@ -142,12 +142,6 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         vim +PluginInstall +qall now
     fi
-    if [[ -d $dir/vim/bundle/YouCompleteMe ]];then
-        eval "$inst_cmd cmake"
-        cd $dir/vim/bundle/YouCompleteMe
-        source ./install.sh
-    fi
-    echo `pwd`
     echo "Some plugins have dependencies, see documentation!"
     echo "Here are some of them:"
     read -p "Install ctags? " -n 1 -r
