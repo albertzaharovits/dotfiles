@@ -12,6 +12,12 @@ files="bashrc vimrc vim zshrc oh-my-zsh"    # list of files/folders to symlink i
 
 ##########
 
+# Might as well ask for password up-front, right?
+sudo -v
+
+# Keep-alive: update existing sudo time stamp if set, otherwise do nothing.
+while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+
 platform=$(uname);
 
 if [[ $platform == 'Linux' ]]; then
@@ -51,21 +57,21 @@ done
 
 install_zsh () {
 # Test to see if zshell is installed.  If it is:
-if [ ! $(hash zsh) ]; then
+if ! type -P zsh &> /dev/null; then
     # Clone my oh-my-zsh repository from GitHub only if it isn't already present
     if [[ ! -d $dir/oh-my-zsh/ ]]; then
         git clone http://github.com/robbyrussell/oh-my-zsh.git
     fi
     # Set the default shell to zsh if it isn't currently set to zsh
     if [[ ! $(echo $SHELL) == $(which zsh) ]]; then
-        chsh -s $(which zsh) $USER
+        sudo chsh -s $(which zsh) $USER
     fi
 else
     # If zsh isn't installed, get the platform of the current machine
     # If the platform is Linux, try an apt-get to install zsh and then recurse
     eval "$inst_cmd zsh"
     if [[ $platform == 'Darwin' ]]; then
-        sudo echo "`which zsh`" | sudo tee -a /etc/shells
+        echo "`which zsh`" | sudo tee -a /etc/shells
     fi
     install_zsh
 fi
@@ -73,38 +79,34 @@ fi
 
 # The Silver searcher (like ack or grep, but faster)
 install_ag () {
-    if [ ! $(hash ag) ]; then
-        eval "$inst_cmd ag"
-    fi
+if ! type -P ag &> /dev/null; then
+    eval "$inst_cmd ag"
+fi
 }
 
 install_ctags () {
 if [[ $platform == 'Linux' ]]; then
-    if [ ! $(hash ctags) ]; then
+    if ! type -P ctags &> /dev/null; then
         eval "$inst_cmd exuberant-ctags"
     fi
 elif [[ $platform == 'Darwin' ]]; then
-    if [ ! $(hash ctags) ]; then
+    if ! type -P ctags &> /dev/null; then
         eval "$inst_cmd ctags"
     fi
 fi
 }
 
 install_cscope () {
-    if [ ! $(hash cscope) ]; then
-        eval "$inst_cmd cscope"
-    fi
+if ! type -P cscope &> /dev/null; then
+    eval "$inst_cmd cscope"
+fi
 }
 
 install_flake8 () {
-    if [ ! $(hash pip) ]; then
-        if [[ $platform == 'Linux' ]]; then
-            sudo apt-get install python-pip
-        elif [[ $platform == 'Darwin' ]]; then
-            sudo easy_install pip
-        fi
-    fi
-    pip install flake8
+if ! type -P pip &> /dev/null; then
+    sudo easy_install pip
+fi
+pip install flake8
 }
 
 install_vundle () {
@@ -119,7 +121,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     install_zsh
 fi
 
-if [ ! $(hash vim) ]; then
+if ! type -P vim &> /dev/null; then
     read -p "Install vim? " -n 1 -r
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
