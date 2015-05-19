@@ -16,9 +16,9 @@ platform=$(uname);
 
 if [[ $platform == 'Linux' ]]; then
     if `type -p apt-get > /dev/null`; then
-        inst_cmd="sudo apt-get install"
+        inst_cmd="sudo apt-get -y install"
     elif `type -p yum > /dev/null`; then
-        inst_cmd="sudo yum install"
+        inst_cmd="sudo yum -y install"
     fi
 elif [[ $platform == 'Darwin' ]]; then
     if `type -p brew > /dev/null`; then
@@ -49,10 +49,9 @@ for file in $files; do
     ln -s $dir/$file ~/.$file
 done
 
-
 install_zsh () {
 # Test to see if zshell is installed.  If it is:
-if [ -f /usr/local/bin/zsh -o -f /bin/zsh -o -f /usr/bin/zsh ]; then
+if [ ! $(hash zsh) ]; then
     # Clone my oh-my-zsh repository from GitHub only if it isn't already present
     if [[ ! -d $dir/oh-my-zsh/ ]]; then
         git clone http://github.com/robbyrussell/oh-my-zsh.git
@@ -64,7 +63,7 @@ if [ -f /usr/local/bin/zsh -o -f /bin/zsh -o -f /usr/bin/zsh ]; then
 else
     # If zsh isn't installed, get the platform of the current machine
     # If the platform is Linux, try an apt-get to install zsh and then recurse
-    "$inst_cmd zsh"
+    eval "$inst_cmd zsh"
     if [[ $platform == 'Darwin' ]]; then
         sudo echo "`which zsh`" | sudo tee -a /etc/shells
     fi
@@ -74,19 +73,27 @@ fi
 
 # The Silver searcher (like ack or grep, but faster)
 install_ag () {
-    "$inst_cmd ag"
+    if [ ! $(hash ag) ]; then
+        eval "$inst_cmd ag"
+    fi
 }
 
 install_ctags () {
 if [[ $platform == 'Linux' ]]; then
-    "$inst_cmd exuberant-ctags"
+    if [ ! $(hash ctags) ]; then
+        eval "$inst_cmd exuberant-ctags"
+    fi
 elif [[ $platform == 'Darwin' ]]; then
-    "$inst_cmd ctags"
+    if [ ! $(hash ctags) ]; then
+        eval "$inst_cmd ctags"
+    fi
 fi
 }
 
 install_cscope () {
-    "$inst_cmd cscope"
+    if [ ! $(hash cscope) ]; then
+        eval "$inst_cmd cscope"
+    fi
 }
 
 install_flake8 () {
@@ -112,6 +119,14 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     install_zsh
 fi
 
+if [ ! $(hash vim) ]; then
+    read -p "Install vim? " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        eval "$inst_cmd vim"
+    fi
+fi
+
 read -p "Install Vundle (VIM plugin manager)? " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
@@ -121,6 +136,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         vim +PluginInstall +qall now
     fi
+    echo `pwd`
     echo "Some plugins have dependencies, see documentation!"
     echo "Here are some of them:"
     read -p "Install ctags? " -n 1 -r
