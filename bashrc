@@ -34,3 +34,6 @@ alias ls="ls -Glah"
 export CLICOLOR=1
 # Set "ls" colors
 export LSCOLORS=Gxfxcxdxbxegedabagacad
+
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
