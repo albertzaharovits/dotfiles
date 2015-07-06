@@ -26,8 +26,6 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 " git
 Plugin 'tpope/vim-fugitive'
-" syntactic checker, might require other plugins
-Plugin 'scrooloose/syntastic'
 " tagbar is the new taglist
 Plugin 'majutsushi/tagbar'
 " cscope
@@ -227,11 +225,6 @@ command PrettyJSON %!python -m json.tool
 autocmd FileType python setlocal shiftwidth=4 expandtab tabstop=4 softtabstop=4
 autocmd FileType python map <buffer> <F4> :call Flake8()<CR>
 autocmd FileType python autocmd BufWritePre * :%s/\s\+$//e
-" let jedi-vim set its omnifunc
-" autocmd FileType python set omnifunc=pythoncomplete#Complete
-
-"autocmd BufNewFile,BufRead *.h source $VIMHOME/bundle/linuxsty.vim/indent/linuxsty.vim
-"autocmd BufNewFile,BufRead *.c source $VIMHOME/bundle/linuxsty.vim/indent/linuxsty.vim
 
 " Fix those pesky situations where you edit & need sudo to save
 cmap w!! w !sudo tee % >/dev/null
@@ -262,18 +255,6 @@ map <leader>l :call ToggleLocationList()<CR>
 " 07. Plugin Settings                                                        "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:rainbow_active = 1 " 0 if you want to enable it later via :RainbowToggle
-
-let g:syntastic_check_on_open = 1
-let g:syntastic_enable_signs = 1
-let g:syntastic_error_symbol = "✗"
-let g:syntastic_warning_symbol = "⚠"
-let g:syntastic_auto_jump = 2
-let g:syntastic_cpp_check_header = 1
-let g:syntastic_cpp_no_include_search = 1
-let g:syntastic_cpp_no_default_include_dirs = 1
-let g:syntastic_cpp_auto_refresh_includes = 1
-let g:syntastic_enable_perl_checker = 1
-let g:syntastic_python_checker_args='--ignore=E501,E128'
 
 let g:tagbar_autoshowtag = 1
 let g:tagbar_autofocus = 1
@@ -313,7 +294,20 @@ let NERDTreeIgnore=['\.pyc$', '\~$']
 let g:nerdtree_tabs_open_on_gui_startup = 0
 let g:nerdtree_tabs_open_on_console_startup = 0
 
+let g:ycm_register_as_syntastic_checker = 1
+let g:ycm_open_loclist_on_ycm_diags = 1
+let g:ycm_server_use_vim_stdout = 1
+let g:ycm_server_log_level = 'info'
+let g:ycm_add_preview_to_completeopt = 1
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_show_diagnostics_ui = 1
 let g:ycm_collect_identifiers_from_tags_files = 1
 let g:ycm_autoclose_preview_window_after_insertion = 1
-let g:ycm_global_ycm_extra_conf = '~/.vim/ycm_extra_conf_default.py'
+let g:ycm_goto_buffer_command = 'same-buffer'
+let g:ycm_key_invoke_completion = '<C-Space>'
+let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf_default.py'
+let g:ycm_key_detailed_diagnostics = '<leader>d'
 nnoremap <leader>g :YcmCompleter GoTo<CR>
+nnoremap <leader>p :YcmCompleter GoParent<CR>
+nnoremap <leader>i :YcmCompleter GoToIplementation<CR>
+nnoremap <F5> :YcmForceCompileAndDiagnostics <CR>
