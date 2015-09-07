@@ -154,3 +154,4 @@ fi
 # fswatch
 # urlview
 # fortune
+# abook

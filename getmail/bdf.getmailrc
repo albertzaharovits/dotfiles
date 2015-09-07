@@ -1,0 +1,16 @@
+[retriever]
+type = SimplePOP3SSLRetriever
+server = pop.bitdefender.biz
+port = 995
+username = *****
+password = *****
+
+[destination]
+type = MDA_external
+path = /usr/bin/procmail
+arguments = ("-f", "%(sender)", "-m", "~/.procmail/bdf.procmailrc")
+
+[options]
+delete = false
+read_all = False
+message_log = ~/.getmail/bdf.log

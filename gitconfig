@@ -1,0 +1,16 @@
+[user]
+	email = albert.zaharovits@gmail.com
+	name = Albert Zaharovits
+[http]
+	sslVerify = true
+[remote-hg]
+	insecure = true
+	hg-git-compat = true
+[push]
+	default = simple
+[sendemail]
+	smtpencryption = tls
+	smtpserver = smtp.gmail.com
+	smtpuser = albert.zaharovits@gmail.com
+	smtpserverport = 587
+	smtppass = *****

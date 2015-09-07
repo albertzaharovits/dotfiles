@@ -8,3 +8,5 @@ vim/bundle
 
 *.log
 *log
+
+anon_patches

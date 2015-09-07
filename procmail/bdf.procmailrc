@@ -1,0 +1,15 @@
+SHELL=/bin/bash
+PATH=/usr/sbin:/usr/bin
+MAILDIR=$HOME/Maildir/bdf
+DEFAULT=$MAILDIR
+LOGFILE=$HOME/.procmail/bdf.log
+LOG=""
+VERBOSE=yes
+
+:0
+* ^Subject:.*\[***\]
+***/
+
+:0:
+inbox/
+EOF

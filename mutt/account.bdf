@@ -1,0 +1,12 @@
+# Maildir with getmail
+set realname            =   "Albert Zaharovits"
+set from                =   *****
+set mbox_type           =   "Maildir"
+set move                =   no
+set folder              =   "~/Maildir/bdf"
+set spoolfile           =   "+inbox"
+set record              =   "+sent"
+set postponed           =   "+drafts"
+# bug in mutt with sidebar
+#unmailboxes *
+mailboxes `echo ~/Maildir/bdf/*`

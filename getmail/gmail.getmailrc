@@ -1,0 +1,16 @@
+[retriever]
+type = SimpleIMAPSSLRetriever
+server = imap.gmail.com
+port = 993
+username = *****
+password = *****
+
+[destination]
+type = MDA_external
+path = /usr/bin/procmail
+arguments = ("-f", "%(sender)", "-m", "~/.procmail/gmail.procmailrc")
+
+[options]
+delete = false
+read_all = False
+message_log = ~/.getmail/gmail.log

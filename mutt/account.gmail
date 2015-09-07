@@ -1,0 +1,13 @@
+# Maildir with getmail
+set realname            =   "Albert Zaharovits"
+set from                =   "albert.zaharovits@gmail.com"
+set mbox_type           =   "Maildir"
+set move                =   no
+set folder              =   "~/Maildir/gmail"
+set spoolfile           =   "+inbox"
+set record              =   "+sent"
+set postponed           =   "+drafts"
+# bug in mutt with sidebar
+#unmailboxes *
+mailboxes `echo ~/Maildir/gmail/*`
+# using msmtp

@@ -1,0 +1,19 @@
+SHELL=/bin/bash
+PATH=/usr/sbin:/usr/bin
+MAILDIR=$HOME/Maildir/gmail
+DEFAULT=$MAILDIR
+LOGFILE=$HOME/.procmail/gmail.log
+LOG=""
+VERBOSE=yes
+
+:0
+* ^(From:|To:|CC:).*(***|*******|*******)@(***|*******|*******).org
+***/
+
+:0
+* ^(From:|To:|CC:).*****
+*****/
+
+:0:
+inbox/
+EOF
