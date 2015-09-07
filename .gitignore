@@ -5,3 +5,6 @@ vim/.netrwhist
 chef/
 private
 vim/bundle
+
+*.log
+*log

@@ -8,7 +8,8 @@
 
 dir=~/dotfiles                    # dotfiles directory
 olddir=~/dotfiles_old             # old dotfiles backup directory
-files="bashrc vimrc vim zshrc oh-my-zsh ycm_extra_conf_default.py"    # list of files/folders to symlink in homedir
+files="bashrc vimrc vim zshrc oh-my-zsh ycm_extra_conf_default.py mutt getmail procmail mailcap"
+# list of files/folders to symlink in homedir
 
 ##########
 
@@ -151,3 +152,5 @@ fi
 
 # openssl
 # fswatch
+# urlview
+# fortune
