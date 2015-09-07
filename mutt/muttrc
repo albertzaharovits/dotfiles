@@ -1,0 +1,55 @@
+set user_agent          =   no
+set use_from            =   yes
+set use_envelope_from   =   yes
+set recall              =   no
+set text_flowed         =   yes
+set mail_check          =   120
+set timeout             =   300
+set imap_keepalive      =   300
+set auto_tag            =   yes
+set beep                =   yes
+set beep_new            =   yes
+set edit_headers        =   yes
+set ssl_force_tls       =   yes
+set send_charset        =   "us-ascii:utf-8"
+set sendmail            =   "/usr/bin/msmtp -C ~/.mutt/msmtprc"
+set editor              =   'vim -c "setlocal fo+=aw"'
+set header_cache        =   "~/.mutt/cache/headers"
+set message_cachedir    =   "~/.mutt/cache/bodies"
+set sort                =   "threads"
+set sort_aux            =   "reverse-last-date-received"
+
+hdr_order Date From To Cc
+
+# Sidebar
+
+set sidebar_visible = yes
+set sidebar_delim   = ' │'
+set sidebar_width   = 24
+
+bind index \cP sidebar-prev
+bind index \cN sidebar-next
+bind index \cO sidebar-open
+bind pager \cP sidebar-prev
+bind pager \cN sidebar-next
+bind pager \cO sidebar-open
+
+macro index 0 '<enter-command>toggle sidebar_visible<enter>'
+macro pager 0 '<enter-command>toggle sidebar_visible<enter>'
+
+# Abook
+set query_command= "abook --mutt-query '%s'"
+macro index,pager A "<pipe-message>abook --add-email-quiet<return>"
+
+# MIME support
+auto_view text/html
+alternative_order text/plain text/enriched text/html
+bind attach <return>    view-mailcap
+
+# Accounts
+source "~/.mutt/account.gmail"
+macro index '<esc>1' '<sync-mailbox><enter-command>source ~/.mutt/account.gmail<enter><change-folder>!<enter>'
+folder-hook gmail 'source ~/.mutt/account.gmail'
+#source "~/.mutt/account.bdf"
+macro index '<esc>2' '<sync-mailbox><enter-command>source ~/.mutt/account.bdf<enter><change-folder>!<enter>'
+folder-hook bdf 'source ~/.mutt/account.bdf'
