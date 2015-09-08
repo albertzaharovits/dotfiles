@@ -10,4 +10,5 @@ set postponed           =   "+drafts"
 # bug in mutt with sidebar
 #unmailboxes *
 mailboxes `echo ~/Maildir/gmail/*`
+set signature           =   "~/.mutt/sig.gmail"
 # using msmtp

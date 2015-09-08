@@ -10,3 +10,4 @@ set postponed           =   "+drafts"
 # bug in mutt with sidebar
 #unmailboxes *
 mailboxes `echo ~/Maildir/bdf/*`
+set signature           =   "~/.mutt/sig.bdf"

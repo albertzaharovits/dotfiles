@@ -205,5 +205,3 @@ fi
 
 
 # fswatch / inotify-tools
-# getmail mutt keybinding
-# mutt email signature
