@@ -8,7 +8,7 @@
 
 dir=~/dotfiles                    # dotfiles directory
 olddir=~/dotfiles_old             # old dotfiles backup directory
-files="bashrc vimrc vim zshrc oh-my-zsh ycm_extra_conf_default.py mutt getmail procmail mailcap gitconfig"
+files="bashrc vimrc vim zshrc oh-my-zsh ycm_extra_conf_default.py gitconfig"
 # list of files/folders to symlink in homedir
 
 ##########
@@ -113,6 +113,46 @@ if [ ! -d $dir/vim/bundle ]; then
 fi
 }
 
+install_email () {
+eval "$inst_cmd mutt-patched"
+eval "$inst_cmd getmail"
+eval "$inst_cmd procmail"
+eval "$inst_cmd abook"
+
+mail_files="mutt getmail procmail mailcap abook"
+for file in $mail_files; do
+    echo "Moving any existing dotfiles from ~ to $olddir"
+    mv ~/.$file ~/dotfiles_old/
+    echo "Creating symlink to $file in home directory."
+    ln -s $dir/$file ~/.$file
+done
+
+read -p "Install crontabs for getmail [y/n]? " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    if ! crontab -l | grep -q 'getmail.*gmail.getmailrc' -; then
+        (crontab -l; echo "*/10  *   *   *   *   getmail -q \
+            --rcfile=gmail.getmailrc") | crontab -
+    fi
+    if ! crontab -l | grep -q 'getmail.*bdf.getmailrc' -; then
+        (crontab -l; echo "*/10  *   *   *   *   getmail -q \
+            --rcfile=bdf.getmailrc") | crontab -
+    fi
+fi
+
+read -p "Install openssl [y/n]? " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    eval "$inst_cmd openssl"
+fi
+
+read -p "Install urlview [y/n]? " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    eval "$inst_cmd urlview"
+fi
+}
+
 read -p "Install zsh [y/n]? " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
@@ -150,8 +190,20 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     fi
 fi
 
-# openssl
-# fswatch
-# urlview
-# fortune
-# abook
+read -p "Install fortune [y/n]? " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    eval "$inst_cmd fortune"
+fi
+
+read -p "Install email (mutt & getmail & msmtp) [y/n]? " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    echo "Accounts credentials have been striped off"
+    install_email
+fi
+
+
+# fswatch / inotify-tools
+# getmail mutt keybinding
+# mutt email signature

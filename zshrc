@@ -77,8 +77,8 @@ if [ -f /usr/bin/vim ]; then
   export EDITOR=/usr/bin/vim
 fi
 
-if [ -e /usr/local/bin/fortune ]; then
-    fortune -so
+if [ -x /usr/local/bin/fortune -o -x /usr/games/fortune]; then
+    fortune -s
     echo " "
 fi
 
