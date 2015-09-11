@@ -115,7 +115,7 @@ fi
 
 install_email () {
 eval "$inst_cmd mutt-patched"
-eval "$inst_cmd getmail"
+eval "$inst_cmd getmail4" || eval "$inst_cmd getmail"
 eval "$inst_cmd procmail"
 eval "$inst_cmd abook"
 

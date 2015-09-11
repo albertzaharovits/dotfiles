@@ -58,12 +58,12 @@ Plugin 'jtratner/vim-flavored-markdown'
 Plugin 'ntpeters/vim-better-whitespace'
 
 " Python
-Plugin 'nvie/vim-flake8'
 Plugin 'fs111/pydoc.vim'
 
 " more than omni completion, jedi completion (in python)
 Plugin 'Valloric/YouCompleteMe'
 " YCM superseds this
+" Plugin 'nvie/vim-flake8'
 " Plugin 'davidhalter/jedi-vim'
 " Plugin 'ervandew/supertab'
 
