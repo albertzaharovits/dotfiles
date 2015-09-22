@@ -13,6 +13,10 @@ files="bashrc vimrc vim zshrc oh-my-zsh ycm_extra_conf_default.py gitconfig"
 
 ##########
 
+echo "This should install cleanly on ubuntu 14.04"
+echo "On other platforms your on your own! Sorry"
+echo "I always welcome pull requests"
+
 # Might as well ask for password up-front, right?
 sudo -v
 
@@ -118,6 +122,7 @@ eval "$inst_cmd mutt-patched"
 eval "$inst_cmd getmail4" || eval "$inst_cmd getmail"
 eval "$inst_cmd procmail"
 eval "$inst_cmd abook"
+eval "$inst_cmd inotify-tools" || eval "$inst_cmt fswatch"
 
 mail_files="mutt getmail procmail mailcap abook"
 for file in $mail_files; do
@@ -201,7 +206,11 @@ echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo "Accounts credentials have been striped off"
     install_email
+    read -p "Install crontabs for inotiwatch [y/n]? " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        if ! crontab -l | grep -q '\.mutt/check_mail_notify\.sh' -; then
+            (crontab -l; echo '@reboot eval "export $(egrep -az DBUS_SESSION_BUS_ADDRESS /proc/$(pgrep -u $LOGNAME gnome-session)/environ)" && $HOME/.mutt/check_mail_notify.sh') | crontab -
+        fi
+    fi
 fi
-
-
-# fswatch / inotify-tools
