@@ -93,3 +93,15 @@ folder-hook gmail 'source ~/.mutt/account.gmail'
 #source "~/.mutt/account.bdf"
 macro index '<esc>2' '<sync-mailbox><enter-command>source ~/.mutt/account.bdf<enter><change-folder>!<enter>'
 folder-hook bdf 'source ~/.mutt/account.bdf'
+
+#PGP
+source "~/.mutt/gpg.rc"
+set pgp_use_gpg_agent       =   yes
+set pgp_sign_as             =   CDFE71B3
+set pgp_timeout             =   600
+set crypt_autosign          =   yes
+set crypt_replyencrypt      =   yes
+# key binds
+bind compose p  pgp-menu
+macro compose Y pfy "send mail without GPG"
+
