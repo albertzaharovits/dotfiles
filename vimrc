@@ -116,7 +116,7 @@ au VimResized * exe "normal! \<c-w>=""
 :map <F5> :setlocal spell! spelllang=en_us<CR>
 
 " default yank/paste in unnamed register(clipboard)
-set clipboard=unnamed
+set clipboard=unnamedplus
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 02. Events                                                                 "
@@ -231,25 +231,25 @@ cmap w!! w !sudo tee % >/dev/null
 
 nmap <silent> ,/ :nohlsearch<CR>
 
-" in case your cscope execute is not in system path.
-" let g:cscope_cmd = 'D:/tools/vim/cscope.exe'
 " s: Find this C symbol
-map <leader>fs :call CscopeFind('s', expand('<cword>'))<CR>
+nnoremap  <leader>fs :call cscope#find('s', expand('<cword>'))<CR>
 " g: Find this definition
-map <leader>fg :call CscopeFind('g', expand('<cword>'))<CR>
+nnoremap  <leader>fg :call cscope#find('g', expand('<cword>'))<CR>
 " d: Find functions called by this function
-map <leader>fd :call CscopeFind('d', expand('<cword>'))<CR>
+nnoremap  <leader>fd :call cscope#find('d', expand('<cword>'))<CR>
 " c: Find functions calling this function
-map <leader>fc :call CscopeFind('c', expand('<cword>'))<CR>
+nnoremap  <leader>fc :call cscope#find('c', expand('<cword>'))<CR>
 " t: Find this text string
-map <leader>ft :call CscopeFind('t', expand('<cword>'))<CR>
+nnoremap  <leader>ft :call cscope#find('t', expand('<cword>'))<CR>
 " e: Find this egrep pattern
-map <leader>fe :call CscopeFind('e', expand('<cword>'))<CR>
+nnoremap  <leader>fe :call cscope#find('e', expand('<cword>'))<CR>
 " f: Find this file
-map <leader>ff :call CscopeFind('f', expand('<cword>'))<CR>
+nnoremap  <leader>ff :call cscope#find('f', expand('<cword>'))<CR>
 " i: Find files #including this file
-map <leader>fi :call CscopeFind('i', expand('<cword>'))<CR>
-map <leader>l :call ToggleLocationList()<CR>
+nnoremap  <leader>fi :call cscope#find('i', expand('<cword>'))<CR>
+
+nnoremap <leader>fa :call cscope#findInteractive(expand('<cword>'))<CR>
+nnoremap <leader>l :call ToggleLocationList()<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 07. Plugin Settings                                                        "
