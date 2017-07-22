@@ -7,7 +7,7 @@
 	insecure = true
 	hg-git-compat = true
 [push]
-	default = simple
+	default = current
 [sendemail]
 	smtpencryption = tls
 	smtpserver = smtp.gmail.com
