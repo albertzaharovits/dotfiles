@@ -1,0 +1,18 @@
+Install home-brew
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+
+brew install tmux
+https://medium.com/@sasom/auto-starting-tmux-in-iterm2-4276182d452a
+tmux ls && read tmux_session && tmux attach -t ${tmux_session:-default} || tmux new -s ${tmux_session:-default}
+brew install mvim
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+
+brew install zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+
+brew install git
+brew install fortune
+brew install reattach-to-user-namespace
+
+brew tap adoptopenjdk/openjdk
+brew cask install adoptopenjdk11

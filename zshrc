@@ -8,7 +8,7 @@ export ZSH=$HOME/.oh-my-zsh
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 #ZSH_THEME="robbyrussell"
-ZSH_THEME="gianu"
+ZSH_THEME="minimal"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -52,8 +52,7 @@ COMPLETION_WAITING_DOTS="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git git-extras git-flow colored-man-pages colorize github vagrant brew osx npm docker zsh-syntax-highlighting)
-
+plugins=(git git-extras git-flow colored-man-pages colorize github vagrant brew osx npm docker zsh-navigation-tools zsh-syntax-highlighting history-substring-search)
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -101,7 +100,6 @@ alias vaghalt='vagrant halt'
 
 ## Miscellaneous Aliases
 alias htop='sudo htop'
-alias ls="ls --color=auto"
 
 if [ -x /usr/local/bin/fortune -o -x /usr/games/fortune ]; then
     fortune -s
@@ -130,11 +128,6 @@ qfind () {
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# from brew install zsh-history-substring-search
-source /usr/local/share/zsh-history-substring-search/zsh-history-substring-search.zsh
-# from brew install zsh-nagivation-tools
-source /usr/local/share/zsh-navigation-tools/zsh-navigation-tools.plugin.zsh
-
 export HISTFILE="$HOME/.zsh_history"
 export HISTSIZE=400000000
 export SAVEHIST=400000000
@@ -152,6 +145,11 @@ setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks before recording en
 setopt HIST_VERIFY               # Don't execute immediately upon history expansion.
 setopt HIST_BEEP                 # Beep when accessing nonexistent history.
 
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
+
 export PATH="/usr/local/opt/openldap/bin:/usr/local/opt/openldap/sbin:$PATH"
 
 export NVM_DIR="$HOME/.nvm"
@@ -163,7 +161,7 @@ export VAULT_ADDR=https://secrets.elastic.co:8200
 export JAVA8FIPS_HOME=$(/usr/libexec/java_home -v 1.8.0_172)
 export JAVA_HOME=$(/usr/libexec/java_home -v 14)
 export RUNTIME_JAVA_HOME=$(/usr/libexec/java_home -v 14)
-for version in $(seq 7 14); do
+for version in $(seq 7 15); do
 	if [ $version -lt 9 ]; then
 		export JAVA${version}_HOME=$(/usr/libexec/java_home -v 1.${version})
 	else
