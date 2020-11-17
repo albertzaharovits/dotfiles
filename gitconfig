@@ -1,6 +1,8 @@
+[alias]
+	pr = "!f() { git fetch origin pull/$1/head:pr/$1; }; f"
 [user]
-	email = albert.zaharovits@gmail.com
 	name = Albert Zaharovits
+	email = albert.zaharovits@elastic.co
 [http]
 	sslVerify = true
 [remote-hg]
@@ -14,3 +16,18 @@
 	smtpuser = albert.zaharovits@gmail.com
 	smtpserverport = 587
 	smtppass = *****
+[filesystem "Oracle Corporation|12|/dev/disk1s1"]
+	timestampResolution = 8000 nanoseconds
+	minRacyThreshold = 0 nanoseconds
+[filesystem "Oracle Corporation|9.0.1|/dev/disk1s1"]
+	timestampResolution = 1000 milliseconds
+	minRacyThreshold = 0 nanoseconds
+[filesystem "Oracle Corporation|12.0.2|/dev/disk1s1"]
+	timestampResolution = 8000 nanoseconds
+	minRacyThreshold = 0 nanoseconds
+[filesystem "Oracle Corporation|13.0.1|/dev/disk1s1"]
+	timestampResolution = 7000 nanoseconds
+	minRacyThreshold = 0 nanoseconds
+[filesystem "Oracle Corporation|14|/dev/disk1s1"]
+	timestampResolution = 15000 nanoseconds
+	minRacyThreshold = 0 nanoseconds

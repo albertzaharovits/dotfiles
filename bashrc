@@ -37,3 +37,6 @@ export LSCOLORS=Gxfxcxdxbxegedabagacad
 
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
+
+export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"

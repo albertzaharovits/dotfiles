@@ -52,7 +52,7 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'linuxsty.vim'
 
 " syntax files
-Plugin 'leshill/vim-json'
+Plugin 'elzr/vim-json'
 Plugin 'jtratner/vim-flavored-markdown'
 " trailing white-spaces
 Plugin 'ntpeters/vim-better-whitespace'
@@ -66,8 +66,6 @@ Plugin 'Valloric/YouCompleteMe'
 " Plugin 'nvie/vim-flake8'
 " Plugin 'davidhalter/jedi-vim'
 " Plugin 'ervandew/supertab'
-
-Plugin 'mephux/bro.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -116,7 +114,8 @@ au VimResized * exe "normal! \<c-w>=""
 :map <F5> :setlocal spell! spelllang=en_us<CR>
 
 " default yank/paste in unnamed register(clipboard)
-set clipboard=unnamedplus
+" set clipboard=unnamedplus
+set clipboard=unnamed
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 02. Events                                                                 "
@@ -140,11 +139,10 @@ set omnifunc=syntaxcomplete#Complete
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set t_Co=256              " enable 256-color mode.
 syntax enable             " enable syntax highlighting (previously syntax on).
-colorscheme molokai       " set colorscheme
 
 " Prettify JSON files
-autocmd BufRead,BufNewFile *.json set filetype=json
-autocmd Syntax json sou ~/.vim/syntax/json.vim
+" autocmd BufRead,BufNewFile *.json set filetype=json
+" autocmd Syntax json sou ~/.vim/syntax/json.vim
 
 " Prettify Vagrantfile
 autocmd BufRead,BufNewFile Vagrantfile set filetype=ruby
@@ -157,7 +155,7 @@ augroup END
 
 " Highlight characters that go over 80 columns (by drawing a border on the 81st)
 if exists('+colorcolumn')
-  set colorcolumn=81
+  set colorcolumn=141
   highlight ColorColumn ctermbg=red
 else
   highlight OverLength ctermbg=red ctermfg=white guibg=#592929
@@ -190,9 +188,9 @@ endif
 " 05. Text Formatting/Layout                                                 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set autoindent            " auto-indent
-set tabstop=4             " tab spacing
-set softtabstop=4         " unify
-set shiftwidth=4          " indent/outdent by 2 columns
+set tabstop=2             " tab spacing
+set softtabstop=2         " unify
+set shiftwidth=2          " indent/outdent by 2 columns
 set shiftround            " always indent/outdent to the nearest tabstop
 set expandtab             " use spaces instead of tabs
 set smartindent           " automatically insert one extra level of indentation
@@ -312,3 +310,4 @@ nnoremap <leader>g :YcmCompleter GoTo<CR>
 nnoremap <leader>p :YcmCompleter GoParent<CR>
 nnoremap <leader>i :YcmCompleter GoToIplementation<CR>
 nnoremap <F5> :YcmForceCompileAndDiagnostics <CR>
+
